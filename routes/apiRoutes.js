@@ -1,17 +1,17 @@
 const router = require("express").Router();
-const Workout = require("../models/workout.js");
+const Workout = require("../models/workout");
 
 //post workout route
 router.post("/workouts", ({ body }, res) => {
   console.log("post route hit");
   console.log("post route body:", body);
-  // Workout.create(body)
-  //   .then((newWorkout) => {
-  //     res.json(newWorkout);
-  //   })
-  //   .catch((err) => {
-  //     res.status(400).json(err);
-  //   });
+  Workout.create(body)
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 });
 
 //general get workouts route
@@ -19,8 +19,19 @@ router.get("/workouts", (req, res) => {
   console.log("get route hit general");
   // console.log(`general get res:>>`, res.body);
   Workout.find({})
-    .then((recentWorkout) => {
-      console.log(recentWorkout);
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+//delete workout route
+router.delete("/workouts", ({ body }, res) => {
+  Workout.findOneAndDelete(body.id)
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
     })
     .catch((err) => {
       res.json(err);
@@ -31,9 +42,11 @@ router.get("/workouts", (req, res) => {
 router.put("/workouts/:id", ({ body, params }, res) => {
   console.log(`workout id route hit:>>`);
   console.log("update body", body);
-  Workout.create(body).then(({ id }) =>
+  console.log(`params:>>`, params);
+  const workoutId = params.id;
+  Workout.create(body).then((workoutId) =>
     Workout.findOneAndUpdate(
-      id,
+      workoutId,
       {
         $push: {
           exercises: body,
@@ -44,8 +57,8 @@ router.put("/workouts/:id", ({ body, params }, res) => {
         runValidators: true,
       }
     )
-      .then((updatedWorkout) => {
-        res.json(updatedWorkout);
+      .then((dbWorkout) => {
+        res.json(dbWorkout);
       })
       .catch((err) => {
         res.json(err);
@@ -58,19 +71,8 @@ router.get("/workouts/range", (req, res) => {
   console.log(`range get request hit`);
   Workout.find({})
     .limit(7)
-    .then((recentWorkouts) => {
-      res.json(recentWorkouts);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
-
-//delete workout route
-router.delete("/workouts", ({ body }, res) => {
-  Workout.findOneAndDelete(body.id)
-    .then((deletedWorkout) => {
-      res.json(deletedWorkout);
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
     })
     .catch((err) => {
       res.json(err);
