@@ -44,26 +44,24 @@ router.put("/workouts/:id", ({ body, params }, res) => {
   console.log("update body", body);
   console.log(`params:>>`, params);
   const workoutId = params.id;
-  Workout.create(body).then((workoutId) =>
-    Workout.findOneAndUpdate(
-      workoutId,
-      {
-        $push: {
-          exercises: body,
-        },
+  Workout.findByIdAndUpdate(
+    workoutId,
+    {
+      $push: {
+        exercises: body,
       },
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
-      .then((dbWorkout) => {
-        res.json(dbWorkout);
-      })
-      .catch((err) => {
-        res.json(err);
-      })
-  );
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 //get workouts in the last 7 days
