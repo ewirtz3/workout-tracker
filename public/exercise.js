@@ -27,7 +27,6 @@ async function initExercise() {
   if (location.search.split("=")[1] === undefined) {
     //workout will be assigned to the value of calling the createWorkout() method that is found on the API object in ./api.js. how it's accessing it I'm not sure
     workout = await API.createWorkout();
-    console.log(workout);
   }
   //if workout comes back as a truthy value, set the search property of the url path to equal "?id=" + the _id property of the workout object
   if (workout) {

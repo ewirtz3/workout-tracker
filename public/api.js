@@ -9,18 +9,16 @@ const API = {
       res = await fetch("/api/workouts");
       //if that doesn't work, console log the error
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     //if the try statement works, the response is an HTTP one. const json calls the json() method on the response and assigns the value to the variable
     const json = await res.json();
-    console.log("api.js getLastWorkout", json);
 
     //returns the last recorded workout by returning the json object at the last index of the response array
     return json[json.length - 1];
   },
   //async function, receives one data parameter, is called in ./exercise.js
   async addExercise(data) {
-    console.log(data);
     //const id is assigned to the result of going to the current url, into the search property, separating the search property at the = sign, and getting the object at index 1 (second object) of the second part of the split url
     const id = location.search.split("=")[1];
 

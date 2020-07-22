@@ -3,8 +3,6 @@ const Workout = require("../models/workout");
 
 //post workout route
 router.post("/workouts", ({ body }, res) => {
-  console.log("post route hit");
-  console.log("post route body:", body);
   Workout.create(body)
     .then((dbWorkout) => {
       res.json(dbWorkout);
@@ -16,8 +14,6 @@ router.post("/workouts", ({ body }, res) => {
 
 //general get workouts route
 router.get("/workouts", (req, res) => {
-  console.log("get route hit general");
-  // console.log(`general get res:>>`, res.body);
   Workout.find({})
     .then((dbWorkout) => {
       res.json(dbWorkout);
@@ -40,9 +36,6 @@ router.delete("/workouts", ({ body }, res) => {
 
 //update workout by id
 router.put("/workouts/:id", ({ body, params }, res) => {
-  console.log(`workout id route hit:>>`);
-  console.log("update body", body);
-  console.log(`params:>>`, params);
   const workoutId = params.id;
   Workout.findByIdAndUpdate(
     workoutId,
@@ -66,7 +59,6 @@ router.put("/workouts/:id", ({ body, params }, res) => {
 
 //get workouts in the last 7 days
 router.get("/workouts/range", (req, res) => {
-  console.log(`range get request hit`);
   Workout.find({})
     .limit(7)
     .then((dbWorkout) => {
